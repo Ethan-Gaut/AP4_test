@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+
+{% endblock %} 
+
+{% block title %}Inscription Infirmière{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="form-container">
+            <h2>Inscription Infirmière</h2>
+
+            {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_label(form.login, 'Nom d\'utilisateur') }}
+                    {{ form_widget(form.login, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.mp, 'Mot de passe') }}
+                    {{ form_widget(form.mp, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+
+                {# Flash Message for Success #}
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+            
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+            {# Content of the page will be rendered here #}
+
+                <button type="submit" class="btn btn-primary">S'inscrire</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
