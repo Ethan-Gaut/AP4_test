@@ -14,13 +14,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ConnexionPageController extends AbstractController
 {
     #[Route('/', name: 'connexionpage')]
-    public function index(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
+    public function index(): Response
     {
-        $login = new PersonneLogin();
-        $login-->setLogin('test');
-        $login-->setPassword($hasher->hashPassword($login, 'test'));
-        $em->persist($login);
-        $em->flush();
         return $this->render('connexionPage/index.html.twig', [
         ]);
     }

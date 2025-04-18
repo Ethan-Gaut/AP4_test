@@ -18,6 +18,7 @@ security:
         main:
             lazy: true
             custom_authenticator: App\Security\AppAuthenticator
+
             logout:
                 path: app_logout
                 # where to redirect after logout
