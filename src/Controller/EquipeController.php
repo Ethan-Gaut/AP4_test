@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class EquipeController extends AbstractController
 {
     #[Route('/equipe', name: 'equipepage')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, $user): Response
     {
         // Récupérer toutes les personnes de la base de données
         $personnes = $entityManager->getRepository(Personne::class)->findAll();

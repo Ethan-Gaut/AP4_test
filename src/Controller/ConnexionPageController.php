@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ConnexionPageController extends AbstractController
 {
-    #[Route('/', name: 'connexionpage')]
+    #[Route('/connexion', name: 'connexionpage')]
     public function index(): Response
     {
         return $this->render('connexionPage/index.html.twig', [

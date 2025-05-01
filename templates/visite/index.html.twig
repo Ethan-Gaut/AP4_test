@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello VisiteController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+{# <div class="example-wrapper">
+    <h2>Mes visites</h2>
+
+    <ul>
+        {% for visite in visites %}
+            <p>Date prévue : {{ visite.datePrevue|date('d/m/Y H:i') }}</p>
+            <p>Patient : {{ patients[visite.id].id }}</p>
+        {% else %}
+            <li>Aucune visite à afficher.</li>
+        {% endfor %}
+    </ul>
+</div> #}
+
+    <h1 class="text-2xl font-bold mb-4">Mes visites</h1>
+
+    {% if visites is not empty %}
+        <table class="table-auto w-full border-collapse border border-gray-300">
+            <thead class="bg-gray-100">
+            <tr>
+                <th class="border px-4 py-2">ID</th>
+                <th class="border px-4 py-2">Patient</th>
+                <th class="border px-4 py-2">Date prévue</th>
+                <th class="border px-4 py-2">Durée</th>
+                <th class="border px-4 py-2">Compte-rendu</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for visite in visites %}
+                <tr class="hover:bg-gray-50">
+                    <td class="border px-4 py-2">{{ visite.id }}</td>
+                    <td class="border px-4 py-2">
+                        {{ visite.patient.nom }} {{ visite.patient.prenom }}
+                    </td>
+                    <td class="border px-4 py-2">
+                        {{ visite.datePrevue|date('d/m/Y H:i') }}
+                    </td>
+                    <td class="border px-4 py-2">{{ visite.duree }} minutes</td>
+                    <td class="border px-4 py-2">
+                        {{ visite.compteRenduInfirmiere ?: 'Non renseigné' }}
+                    </td>
+                    <td class="border px-4 py-2">
+                        <a href="{{ path('app_visite_modifier', {'id': visite.id}) }}" class="btn btn-warning">Modifier</a>
+                        <a href="{{ path('app_visite_supprimer', {'id': visite.id}) }}" class="btn btn-danger"
+                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette visite ?');">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+
+
+
+            {#             {% for visite in visites %}
+                <tr class="hover:bg-gray-50">
+                    <td class="border px-4 py-2">{{ visite.id }}</td>
+                    <td class="border px-4 py-2">
+            {{ visite.patient.nom }} {{ visite.patient.prenom }}
+            </td>
+            <td class="border px-4 py-2">
+                {{ visite.datePrevue|date('d/m/Y H:i') }}
+            </td>
+            <td class="border px-4 py-2">{{ visite.duree }} minutes</td>
+            <td class="border px-4 py-2">
+                {{ visite.compteRenduInfirmiere ?: 'Non renseigné' }}
+            </td>
+            </tr>
+            {% endfor %} #}
+            </tbody>
+        </table>
+        <a href="{{ path('app_visite_ajouter') }}" class="btn btn-primary">Ajouter une visite</a>
+
+    {% else %}
+        <p>Aucune visite prévue.</p>
+    {% endif %}
+
+
+
+
+
+
+{% endblock %}

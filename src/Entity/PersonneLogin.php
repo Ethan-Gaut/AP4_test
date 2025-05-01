@@ -26,6 +26,9 @@ class PersonneLogin implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $derniereConnexion;
 
+    #[ORM\Column(type: 'string', length: 20)]
+    private string $roleMetier; // valeurs possibles : 'infirmiere', 'admin', 'patient'
+
     public function getId(): ?int
     {
         return $this->id;
@@ -49,6 +52,10 @@ class PersonneLogin implements UserInterface, PasswordAuthenticatedUserInterface
         $this->login = $login;
 
         return $this;
+    }
+    public function getRoleMetier(): string
+    {
+        return $this->roleMetier;
     }
 
     public function setUserIdentifier(string $login): self
@@ -77,9 +84,19 @@ class PersonneLogin implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
-    }
+        $roles = ['ROLE_USER'];
 
+        // Add the role based on the metier
+        if ($this->roleMetier === 'infirmiere') {
+            $roles[] = 'ROLE_INFIRMIERE';
+        } elseif ($this->roleMetier === 'admin') {
+            $roles[] = 'ROLE_ADMIN';
+        } elseif ($this->roleMetier === 'patient') {
+            $roles[] = 'ROLE_PATIENT';
+        }
+
+        return array_unique($roles);
+    }
     public function getSalt(): ?string
     {
         return null;
@@ -88,5 +105,19 @@ class PersonneLogin implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         
+    }
+    public function isInfirmiere(): bool
+    {
+        return $this->metier === 'infirmiere';
+    }
+    public function isAdministrateur(): bool
+    {
+        return $this->metier === 'admin';
+    }
+
+    public function setRoleMetier(string $roleMetier): PersonneLogin
+    {
+        $this->roleMetier = $roleMetier;
+        return $this;
     }
 }

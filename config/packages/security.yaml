@@ -1,58 +1,68 @@
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    # Encodage des mots de passe
     password_hashers:
         App\Entity\PersonneLogin:
             algorithm: auto
-        #Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+
+    # Chargement des utilisateurs depuis la base de données
     providers:
         app_user_provider:
-            # https://symfony.com/doc/current/security.html#loading-users-from-a-database
             entity:
                 class: App\Entity\PersonneLogin
                 property: login
+
     firewalls:
+        # Pas de sécurité pour les ressources de dev
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        # Firewall principal
         main:
             lazy: true
             custom_authenticator: App\Security\AppAuthenticator
 
             logout:
                 path: app_logout
-                # where to redirect after logout
                 # target: app_any_route
 
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
                 path: /
-                # by default, the feature is enabled by checking a checkbox in the
-                # login form, uncomment the following line to always enable it.
-                #always_remember_me: true
+                # always_remember_me: true
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
+        # Firewall pour EasyAdmin
+        easy_admin:
+            pattern: ^/admin
+            security: true
+            form_login:
+                login_path: login
+                check_path: login
+            logout:
+                path: app_logout
+                target: home
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+    # Hiérarchie des rôles
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_INFIRMIERE, ROLE_USER]
+        ROLE_INFIRMIERE: [ROLE_USER]
+        ROLE_PATIENT: [ROLE_USER]
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    # Contrôle d'accès aux URLs
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }  # Permet l'accès à la page de login admin
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/infirmiere, roles: ROLE_INFIRMIERE }
+        - { path: ^/patient, roles: ROLE_PATIENT }
+        - { path: ^/profil, roles: ROLE_USER }
 
+# Configuration spécifique pour les tests
 when@test:
     security:
         password_hashers:
-            # By default, password hashers are resource intensive and take time. This is
-            # important to generate secure password hashes. In tests however, secure hashes
-            # are not important, waste resources and increase test times. The following
-            # reduces the work factor to the lowest possible values.
             Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
                 algorithm: auto
-                cost: 4 # Lowest possible value for bcrypt
-                time_cost: 3 # Lowest possible value for argon
-                memory_cost: 10 # Lowest possible value for argon
+                cost: 4
+                time_cost: 3
+                memory_cost: 10

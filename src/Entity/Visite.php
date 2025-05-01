@@ -15,11 +15,13 @@ class Visite
     #[ORM\Column(type: 'integer', nullable: false)]
     private int $id;
 
-    #[ORM\Column(type: 'integer', nullable: false)]
-    private int $patient;
+    #[ORM\ManyToOne(targetEntity: Personne::class)]
+    #[ORM\JoinColumn(name: 'patient', referencedColumnName: 'id')]
+    private ?Personne $patient;
 
-    #[ORM\Column(type: 'integer', nullable: false)]
-    private int $infirmiere;
+    #[ORM\ManyToOne(targetEntity: Infirmiere::class)]
+    #[ORM\JoinColumn(name: 'infirmiere', referencedColumnName: 'id')]
+    private ?Infirmiere $infirmiere;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
     private \DateTimeInterface $datePrevue;
@@ -41,23 +43,23 @@ class Visite
         return $this->id;
     }
 
-    public function getPatient(): ?int
+    public function getPatient(): ?Personne
     {
         return $this->patient;
     }
 
-    public function setPatient(int $patient): self
+    public function setPatient(?Personne $patient): self
     {
         $this->patient = $patient;
         return $this;
     }
 
-    public function getInfirmiere(): ?int
+    public function getInfirmiere(): ?Infirmiere
     {
         return $this->infirmiere;
     }
 
-    public function setInfirmiere(int $infirmiere): self
+    public function setInfirmiere(?Infirmiere $infirmiere): self
     {
         $this->infirmiere = $infirmiere;
         return $this;

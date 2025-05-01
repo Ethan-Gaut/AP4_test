@@ -13,5 +13,11 @@
     <a class="nav-link {{ app.current_route == 'app_login' ? 'active' : '' }}" href="{{ path('app_login') }}">Login</a>
     <a class="nav-link {{ app.current_route == 'app_register' ? 'active' : '' }}" href="{{ path('app_register') }}">register</a>
 
-
+    {% if is_granted('ROLE_ADMIN') %}
+        <p>Bienvenue administrateur !</p>
+    {% elseif is_granted('ROLE_INFIRMIERE') %}
+        <p>Bienvenue infirmière !</p>
+    {% elseif is_granted('ROLE_PATIENT') %}
+        <p>Bienvenue patient !</p>
+    {% endif %}
 {% endblock %}
