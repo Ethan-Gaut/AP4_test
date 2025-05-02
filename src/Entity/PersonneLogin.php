@@ -84,7 +84,7 @@ class PersonneLogin implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        $roles = ['ROLE_USER'];
+        $roles = ['ROLE_PATIENT'];
 
         // Add the role based on the metier
         if ($this->roleMetier === 'infirmiere') {
@@ -118,6 +118,17 @@ class PersonneLogin implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoleMetier(string $roleMetier): PersonneLogin
     {
         $this->roleMetier = $roleMetier;
+        return $this;
+    }
+
+    public function getDerniereConnexion(): ?\DateTimeInterface
+    {
+        return $this->derniereConnexion;
+    }
+
+    public function setDerniereConnexion(?\DateTimeInterface $derniereConnexion): self
+    {
+        $this->derniereConnexion = $derniereConnexion;
         return $this;
     }
 }

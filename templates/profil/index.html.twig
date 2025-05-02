@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+
+        <h2>Informations utilisateur</h2>
+        <ul>
+            <li><strong>Identifiant :</strong> {{ user.login }}</li>
+            <li><strong>Rôle :</strong> {{ user.roleMetier }}</li>
+            <li><strong>Dernière connexion :</strong> {{ user.derniereConnexion ? user.derniereConnexion|date('d/m/Y H:i') : 'Jamais' }}</li>
+        </ul>
+
+        <hr>
+
+        <h3>Modifier l'identifiant</h3>
+        {{ form_start(loginForm) }}
+        {{ form_widget(loginForm) }}
+        <button class="btn btn-primary mt-2">Modifier</button>
+        {{ form_end(loginForm) }}
+
+        <hr>
+
+        <h3>Modifier le mot de passe</h3>
+        {{ form_start(passwordForm) }}
+        {{ form_row(passwordForm.newPassword) }}
+        {{ form_row(passwordForm.confirmPassword) }}
+        <button class="btn btn-warning mt-2">Changer</button>
+        {{ form_end(passwordForm) }}
+
+    </div>
+{% endblock %}

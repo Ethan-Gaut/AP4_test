@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
 <style>
@@ -9,12 +9,12 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>    {% if is_granted('ROLE_ADMIN') %}
+            <p>Bienvenue administrateur !</p>
+        {% elseif is_granted('ROLE_INFIRMIERE') %}
+            <p>Bienvenue infirmière !</p>
+        {% elseif is_granted('ROLE_PATIENT') %}
+            <p>Bienvenue patient !</p>
+        {% endif %}</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/ethan/AP4_test/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/Users/ethan/AP4_test/templates/home/index.html.twig</code></li>
-    </ul>
-</div>
 {% endblock %}

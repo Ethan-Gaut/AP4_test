@@ -26,6 +26,8 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
+            $user->setRoleMetier('patient');
+
             // encode the plain password
             $user->setMp($userPasswordHasher->hashPassword($user, $plainPassword));
 
@@ -35,7 +37,7 @@ class RegistrationController extends AbstractController
             // do anything else you need here, like send an email
 
             //return $security->login($user, AppAuthenticator::class, 'main');
-            return $this->redirectToRoute('connexionpage');
+            return $this->redirectToRoute('app_home');
 
         }
 

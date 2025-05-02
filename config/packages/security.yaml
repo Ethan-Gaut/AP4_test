@@ -32,6 +32,7 @@ security:
                 path: /
                 # always_remember_me: true
 
+
         # Firewall pour EasyAdmin
         easy_admin:
             pattern: ^/admin

@@ -15,16 +15,21 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 class AppAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
+    private EntityManagerInterface $em;
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator, EntityManagerInterface $em)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->em = $em;
+
     }
 
     public function authenticate(Request $request): Passport
@@ -45,7 +50,15 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        return new RedirectResponse($this->urlGenerator->generate('connexionpage'));
+
+        $user = $token->getUser();
+
+        if ($user instanceof \App\Entity\PersonneLogin) {
+            $user->setDerniereConnexion(new \DateTimeImmutable());
+            $this->em->persist($user);
+            $this->em->flush();
+        }
+        return new RedirectResponse($this->urlGenerator->generate('app_home'));
 
 
         // For example:
