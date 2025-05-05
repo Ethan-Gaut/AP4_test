@@ -23,6 +23,7 @@
 
                 <label for="inputPassword" class="mt-2">Mot de passe</label>
                 <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                <small id="capsWarning" style="color: red; display: none;">⚠️ majuscule activé</small>
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
@@ -38,4 +39,19 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const passwordField = document.getElementById('inputPassword');
+            const warning = document.getElementById('capsWarning');
+
+            passwordField.addEventListener('keyup', function (e) {
+                if (e.getModifierState && e.getModifierState('CapsLock')) {
+                    warning.style.display = 'inline';
+                } else {
+                    warning.style.display = 'none';
+                }
+            });
+        });
+    </script>
 {% endblock %}
